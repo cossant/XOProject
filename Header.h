@@ -13,8 +13,10 @@ public:
 	void display();
 	// Getting the player pick coordinates and checking if he wins. Returning true if he wins.
 	bool player_turn();
+	// temporarely here
+	
 private:
-	status field[FIELDLEN*FIELDLEN];
+	status field[FIELDLEN * FIELDLEN];
 	bool playerturn;
 	// Randoming coordinates and checking if bot wins. Returning true in bot wins.
 	bool bot_turn();

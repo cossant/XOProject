@@ -47,11 +47,13 @@ void gamesession::display()
 bool gamesession::player_turn()
 {
 	cout << "»грок, ваш ход - введите координаты позиции, в которую хотите разместить свой \"крестик\"\n"
-		<< "—читаем, что позици€ левого нижнего верхнего угла - A-1, а центральна€ верхн€€ позици€ - Ѕ-1.\n";
+		<< "—читаем, что позици€ левого  верхнего угла - A-1, а центральна€ верхн€€ позици€ - B-1.\n";
 	string responce;
 	cin >> responce;
 	cin.ignore();
 	int xcord, ycord;
+
+	string temp = responce.substr(0, responce.find('-'));
 
 	if (responce.substr(0, responce.find('-')) == "A")
 		xcord = 0;
@@ -203,10 +205,11 @@ bool gamesession::havewinfor(status obj)
 					// Checking having necessary symbol in the actual memory array usint it's coordinates.
 					if (field[curx + cury * 3] != obj)
 						brokenwin = true;
-					if (!brokenwin)
-						return true;
 				}
+				if (!brokenwin)
+					return true;
 			}
 		}
 	}
+	return false;
 }
