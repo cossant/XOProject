@@ -107,3 +107,103 @@ int gamesession::blanks()
 			count++;
 	return count;
 }
+
+
+bool gamesession::havewinfor(status obj)
+{
+	//enum  checkdir 
+	// {Up,UpRight,Right,DownRight, Down, DownLeft,Left,UpLeft};
+	bool trynow[8];
+	int xcord, ycord, xmod, ymod;
+	// Final answer variable.
+	bool havewin = false; 
+	// Checking all positions.
+	for (int i = 0; i < 9; i++)
+	{
+		// Resetting possible directions to null.
+		for (int j = 0; j < 8; j++)
+			trynow[j] = false;
+
+		// Representng linear adress as a pair of coordinates. 
+		xcord = i % 3;
+		ycord = i / 3;
+
+		// Interpreting position as combination of possible directions.
+		switch (i)
+		{
+		case 0:
+			trynow[2] = true; // Right.
+			trynow[3] = true; // DownRight.
+			trynow[4] = true; // Down.
+			break;
+		case 1:
+			trynow[4] = true; // Down.
+			break;
+		case 2:
+			trynow[5] = true; // Downleft.
+			trynow[4] = true; // Down.
+			break;
+		case 3:
+			trynow[2] = true; // Right.
+			break;
+		case 4:
+			// All combinations through this direction will be covered from the other positions.
+			break;
+		case 5:
+			// All combinations through this direction will be covered from the other positions.
+			break;
+		case 6:
+			trynow[2] = true; // Right.
+			break;
+		case 7:
+			// All combinations through this direction will be covered from the other positions.
+			break;
+		case 8:
+			// All combinations through this direction will be covered from the other positions.
+			break;
+		default:
+			cout << "Exception: Went though undefined position.\n";
+			break;
+		}
+
+		// Go through all chosen directions.
+		for (int j = 0; j < 8; j++)
+		{
+			if (trynow[j])
+			{
+				// Interpretating current active direction as modifiers combination.
+				switch (j)
+				{
+				case 2: // Right.
+					xmod = 1;
+					ymod = 0;
+					break;
+				case 3: // DownRight.
+					xmod = 1;
+					ymod = 1;
+					break;
+				case 4: // Down.
+					xmod = 0;
+					ymod = 1;
+					break;
+				case 5: // Downleft.
+					xmod =-1;
+					ymod = 1;
+					break;
+				// Others directions shouldnt be used during normal expluatation.
+				default: 
+					cout << "Exception : Trying to check uncnown direction.\n";
+					break;
+				}
+
+				int curx, cury;
+				// Go through the three positions in the chosen direction.
+				for (int k = 0; k < 3; k++)
+				{
+					curx = xcord + k * xmod;
+					cury = ycord + k * ymod;
+				}
+			}
+		}
+	}
+}
