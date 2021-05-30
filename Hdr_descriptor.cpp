@@ -111,12 +111,8 @@ int gamesession::blanks()
 
 bool gamesession::havewinfor(status obj)
 {
-	//enum  checkdir 
-	// {Up,UpRight,Right,DownRight, Down, DownLeft,Left,UpLeft};
 	bool trynow[8];
 	int xcord, ycord, xmod, ymod;
-	// Final answer variable.
-	bool havewin = false; 
 	// Checking all positions.
 	for (int i = 0; i < 9; i++)
 	{
@@ -197,11 +193,18 @@ bool gamesession::havewinfor(status obj)
 				}
 
 				int curx, cury;
+				bool brokenwin = false;
 				// Go through the three positions in the chosen direction.
 				for (int k = 0; k < 3; k++)
 				{
 					curx = xcord + k * xmod;
 					cury = ycord + k * ymod;
+					////////////////////////////////////////////////////////// Should I add an array indexes check here? ////////////////////////////////////////////////
+					// Checking having necessary symbol in the actual memory array usint it's coordinates.
+					if (field[curx + cury * 3] != obj)
+						brokenwin = true;
+					if (!brokenwin)
+						return true;
 				}
 			}
 		}
