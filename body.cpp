@@ -11,5 +11,6 @@ int main()
 	setlocale(LC_CTYPE, "Russian");
 	srand(time(NULL));
 
-	
+	gamesession* game = new gamesession();
+	game->playrun();
 }

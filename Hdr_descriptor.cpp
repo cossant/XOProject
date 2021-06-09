@@ -17,6 +17,7 @@ gamesession::gamesession()
 	{
 		field[i] = status::Blank;
 	}
+	gameresponse = gamepart::RUNNING;
 }
 
 
@@ -212,4 +213,57 @@ bool gamesession::havewinfor(status obj)
 		}
 	}
 	return false;
+}
+
+bool gamesession::draw()
+{
+	/*for (int i = 0; i < FIELDLEN * FIELDLEN; i++)
+		if (field[i] == status::Blank) return false;*/
+	return (blanks() == 0);
+}
+
+void gamesession::summary(gamepart condition)
+{
+	switch (condition)
+	{
+	case gamepart::RUNNING:
+		break;
+	case gamepart::BOTWON:
+		system("cls");
+		cout << "Нео, ты обосрался и машины победили.\n";
+		break;
+	case gamepart::PLAYERWON:
+		system("cls");
+		cout << "Ты обыграл бота-рандомщика в крестики нолики. Такое себе достижение.\n";
+		break;
+	case gamepart::DRAW:
+		system("cls");
+		cout << "Вы оба лузеры\n";
+		break;
+	}
+}
+
+void gamesession::playrun()
+{
+	while (gameresponse == gamepart::RUNNING)
+	{
+		if (playerturn)
+		{
+			display();
+			if (player_turn())
+				gameresponse = gamepart::PLAYERWON;
+			playerturn = false;
+		}
+		else
+		{
+			display();
+			if (bot_turn())
+				gameresponse = gamepart::BOTWON;
+			playerturn = true;
+		}
+		if (gameresponse == gamepart::RUNNING)
+			if (draw())
+				gameresponse = gamepart::DRAW;
+		summary(gameresponse);
+	}
 }
