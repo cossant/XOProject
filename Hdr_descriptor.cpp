@@ -63,12 +63,10 @@ bool gamesession::player_turn()
 	else
 		xcord = 2;
 	responce.replace(0, responce.find('-') + 1, "");
-	// Debug measure.
-	cout << "Testing msg: responce sec cord left )" << responce << "(\n";
 
 	// As '1' = 49. To normalize the ycord.
 	ycord = int(char(responce[0])) - 49;
-	
+
 	field[ycord * 3 + xcord] = status::Cross;
 
 	return havewinfor(status::Cross);
@@ -79,15 +77,28 @@ bool gamesession::bot_turn()
 {
 
 	// Getting random position.
-	int randmod = (rand() % blanks());
+	/*int randmod = (rand() % blanks());
 	int spaceswas;
 	spaceswas = 0;
-	int chosen = 0;
-	while (spaceswas != randmod)
+	while ((spaceswas != randmod) and (field[chosen] != status::Blank))
 	{
 		if (field[chosen] == status::Blank)
 			spaceswas++;
 		chosen++;
+	}*/
+	int chosen = 0;
+	int blank_passed = 0;
+	int randblank = (rand() % blanks()); // 0-8
+	for (int i = 0; i < FIELDLEN * FIELDLEN; i++)
+	{
+		if (field[i] == status::Blank)
+			if (blank_passed == randblank)
+			{
+				chosen = i;
+				blank_passed = 10; // Impossible amounght of blanks.
+			}
+			else
+				blank_passed++;
 	}
 
 	// Printing O.
@@ -95,7 +106,7 @@ bool gamesession::bot_turn()
 	cout << "Робот выполнил свой ход.\n"
 		<< "Нажмите \"Enter\" для продолжения\n";
 	string garbage;
-	cin.ignore();
+	//cin.ignore();
 	getline(cin, garbage);
 	
 	return havewinfor(status::Zero);
