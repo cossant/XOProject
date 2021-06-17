@@ -45,6 +45,18 @@ void gamesession::display()
 }
 
 
+// Error handler class.
+class wrong_input
+{
+public:
+	string placementname;
+	string problemvalue;
+	wrong_input(string exceptionposition, string symbolofproblem) : placementname(exceptionposition), problemvalue(symbolofproblem)
+	{
+
+	}
+};
+
 bool gamesession::player_turn()
 {
 	cout << "Игрок, ваш ход - введите координаты позиции, в которую хотите разместить свой \"крестик\"\n"
@@ -53,20 +65,30 @@ bool gamesession::player_turn()
 	cin >> responce;
 	cin.ignore();
 	int xcord, ycord;
+	try
+	{
+		string temp = responce.substr(0, responce.find('-'));
 
-	string temp = responce.substr(0, responce.find('-'));
+		if (responce.substr(0, responce.find('-')) == "A")
+			xcord = 0;
+		else if (responce.substr(0, responce.find('-')) == "B")
+			xcord = 1;
+		else if (responce.substr(0, responce.find('-')) == "C")
+			xcord = 2;
+		else
+			throw wrong_input(string("Trying to get unbearable char from the user"), string(responce.substr(0, responce.find('-'))));
+		responce.replace(0, responce.find('-') + 1, "");
 
-	if (responce.substr(0, responce.find('-')) == "A")
-		xcord = 0;
-	else if (responce.substr(0, responce.find('-')) == "B")
-		xcord = 1;
-	else
-		xcord = 2;
-	responce.replace(0, responce.find('-') + 1, "");
-
-	// As '1' = 49. To normalize the ycord.
-	ycord = int(char(responce[0])) - 49;
-
+		// As '1' = 49. To normalize the ycord.
+		ycord = int(char(responce[0])) - 49;
+		if ((ycord > 2) || (ycord < 0))
+			throw wrong_input(string("Trying to get unbearable position index from the user"), responce);
+	}
+	catch (wrong_input inputErr)
+	{
+		cout << "Error: " << inputErr.placementname << ". С использованеим значения: " << inputErr.problemvalue;
+		exit(1);
+	}
 	field[ycord * 3 + xcord] = status::Cross;
 
 	return havewinfor(status::Cross);

@@ -10,6 +10,7 @@ public:
 	// Should be setting the first move order and reset the field.
 	gamesession();
 	void playrun();
+	
 
 protected:
 	enum class status { Cross, Zero, Blank };
